@@ -1,4 +1,5 @@
-﻿using CMS.Application.ApiModels;
+﻿using CMS.API.Filters;
+using CMS.Application.ApiModels;
 using CMS.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -68,7 +69,11 @@ namespace CMS.API.Controllers
         /// Sample request:
         /// {
         ///   FirstName = "FN",
-        ///   LastName = "LN"
+        ///   LastName = "LN",
+        ///   MiddleName = "M",
+        ///   UserName = "UN",
+        ///   Password = "Pwd",
+        ///   UserTypes = "1"
         /// }
         /// </remarks>
         /// <summary>
@@ -80,11 +85,13 @@ namespace CMS.API.Controllers
         /// <response code="400">For bad request</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPost]
+        [ValidateModel]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Post([FromBody]CustomerModel customerModel)
         {
+            await _service.AddCustomer(customerModel);
             return Created("api/Customer/Id", customerModel);
         }
 
@@ -101,6 +108,7 @@ namespace CMS.API.Controllers
         /// <response code="400">For bad request</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPut("{customerId}")]
+        [ValidateModel]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

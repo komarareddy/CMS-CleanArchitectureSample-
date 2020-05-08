@@ -10,7 +10,7 @@ namespace CMS.Core.Entities
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ID")]
-        public int Id { get; set; }
+        public int ID { get; set; }
 
         public string UserType { get; set; }
 

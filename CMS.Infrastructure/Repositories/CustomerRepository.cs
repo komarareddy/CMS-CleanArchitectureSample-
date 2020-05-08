@@ -17,7 +17,18 @@ namespace CMS.Infrastructure.Repositories
         }
         public async Task<bool> AddCustomer(Customer customer)
         {
-            throw new NotImplementedException();
+            bool isInserted = false;
+            try
+            {
+                await _context.Customers.AddAsync(customer);
+                await _context.SaveChangesAsync();
+                isInserted = true;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+            return isInserted;
         }
 
         public async Task<bool> DeleteCustomer()

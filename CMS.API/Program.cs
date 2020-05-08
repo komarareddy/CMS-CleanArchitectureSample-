@@ -12,8 +12,15 @@ using Microsoft.Extensions.Logging;
 
 namespace CMS.API
 {
+    /// <summary>
+    /// Entry point to application
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Main method of the application, sets the default setting
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
@@ -30,11 +37,11 @@ namespace CMS.API
                         context.Database.Migrate();
 
                         //seed data
-                        SeedData.Initialize(services);
+                        //SeedData.Initialize(services);
                     }
                     catch(Exception ex)
                     {
-
+                        throw;
                     }
                 }
             }

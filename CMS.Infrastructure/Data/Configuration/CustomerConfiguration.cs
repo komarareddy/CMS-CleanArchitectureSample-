@@ -13,8 +13,14 @@ namespace CMS.Infrastructure.Data.Configuration
         {
             //Configuring one to many relationship
             //Usertypes(admin, BranchHead..) have many customers
-            entityTypeBuilder.HasOne(u => u.UserTypes)
-                .WithMany(c => c.Customers);
+            //entityTypeBuilder
+
+            //    .WithMany(c => c.Customers)
+            //    .HasForeignKey<int>(s => s.UserTypeID);
+            entityTypeBuilder
+                .HasOne<UserTypes>(u => u.UserTypes)
+                .WithMany(c => c.Customers)
+                .HasForeignKey(u => u.UserTypeID);
         }
     }
 }

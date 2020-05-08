@@ -4,14 +4,16 @@ using CMS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CMSContext))]
-    partial class CMSContextModelSnapshot : ModelSnapshot
+    [Migration("20200508072006_CMS_V2")]
+    partial class CMS_V2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,19 +43,19 @@ namespace CMS.Infrastructure.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserTypeID")
+                    b.Property<int?>("UserTypesId")
                         .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.HasIndex("UserTypeID");
+                    b.HasIndex("UserTypesId");
 
                     b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("CMS.Core.Entities.UserTypes", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID")
                         .HasColumnType("int")
@@ -62,19 +64,19 @@ namespace CMS.Infrastructure.Migrations
                     b.Property<string>("UserType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("UserTypes");
 
                     b.HasData(
                         new
                         {
-                            ID = 1,
+                            Id = -1,
                             UserType = "Admin"
                         },
                         new
                         {
-                            ID = 2,
+                            Id = -2,
                             UserType = "BrachHead"
                         });
                 });
@@ -83,7 +85,7 @@ namespace CMS.Infrastructure.Migrations
                 {
                     b.HasOne("CMS.Core.Entities.UserTypes", "UserTypes")
                         .WithMany("Customers")
-                        .HasForeignKey("UserTypeID");
+                        .HasForeignKey("UserTypesId");
                 });
 #pragma warning restore 612, 618
         }

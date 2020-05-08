@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CMS.API.Filters;
 using CMS.Application.ApiModels;
+using CMS.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,12 @@ namespace CMS.API.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
+        private readonly IAccountService _accountService;
+        public AccountController(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
+
         // GET: 
         // api/Account/Login
 
@@ -22,11 +30,13 @@ namespace CMS.API.Controllers
         /// Generates bearer token for valid user
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [AllowAnonymous]
+        [ValidateModel]
         public IActionResult Login([FromBody]LoginModel loginModel)
         {
-            return Ok();
+           var loginDetails = _accountService.Authenticate(loginModel.UserName, loginModel.Password);
+            return Ok(loginDetails);
         }
     }
 }

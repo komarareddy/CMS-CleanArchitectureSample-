@@ -1,8 +1,11 @@
+using AutoMapper;
 using CMS.API.Helper;
+using CMS.Application.Helpers;
 using CMS.Infrastructure;
 using CMS.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,6 +34,18 @@ namespace CMS.API
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            //Configure Automapper service
+            services.AddAutoMapper(typeof(Startup));
+
+            //Service for valiading JWT
+            services.ValidateJwtToken(Configuration);
+
+            //Below line is for suppressing automatic response of WEB API
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddControllers();
 
             //Settings of connection globally
@@ -51,6 +66,10 @@ namespace CMS.API
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //This below middleware responsible for
+            //Consistent response from APi(errors, success)
+            app.UseCRMResponseWrapperMiddleware();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -63,6 +82,9 @@ namespace CMS.API
 
             app.UseRouting();
 
+            //Make the authentication service is available to the application
+            app.UseAuthentication();
+            //Below line enables authorization capabilities
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

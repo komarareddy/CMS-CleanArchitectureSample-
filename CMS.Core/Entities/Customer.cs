@@ -20,8 +20,8 @@ namespace CMS.Core.Entities
 
         public string Password { get; set; }
 
-        //Navigatio Properties
-        [Column("ID")]
-        public virtual UserTypes UserTypes { get; set; }
+       //Navigatio Properties
+       public int? UserTypeID { get; set; }
+        public  UserTypes UserTypes { get; set; }
     }
 }

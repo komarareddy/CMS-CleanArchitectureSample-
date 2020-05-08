@@ -1,4 +1,5 @@
-﻿using CMS.Application.Interfaces;
+﻿using CMS.Application.Helpers;
+using CMS.Application.Interfaces;
 using CMS.Application.Services;
 using CMS.Core.Interfaces;
 using CMS.Infrastructure.Repositories;
@@ -21,6 +22,9 @@ namespace CMS.IoC
             //CMS.Core.Interface   | CMS.Infrastructure.Repository
             service.AddScoped<ICustomerRepository, CustomerRepository>();
             service.AddScoped<IAccountRepository, AccountRepository>();
+
+            //now we can use Ioptions<jwtSettings> anywhere in our apps
+            service.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
         }
     }
 }
